@@ -1,4 +1,4 @@
-// 23/02/2024 --  787. Cheapest Flights Within K Stops
+// 787. Cheapest Flights Within K Stops
 
 class Solution {
   int findCheapestPrice(
