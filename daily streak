@@ -1,0 +1,20 @@
+// 23/02/2024 --  787. Cheapest Flights Within K Stops
+
+class Solution {
+  int findCheapestPrice(
+      int n, List<List<int>> flights, int src, int dst, int k) {
+    const maxValue = 2147483647;
+    var dist = List<int>.filled(n, maxValue);
+    dist[src] = 0;
+    for (int i = 0; i <= k; i++) {
+      final temp = [...dist];
+      for (final flight in flights) {
+        if (dist[flight[0]] != maxValue) {
+          temp[flight[1]] = min(temp[flight[1]], dist[flight[0]] + flight[2]);
+        }
+      }
+      dist = temp;
+    }
+    return dist[dst] == maxValue ? -1 : dist[dst];
+  }
+}
