@@ -18,3 +18,81 @@ class Solution {
     return dist[dst] == maxValue ? -1 : dist[dst];
   }
 }
+
+// 9. Palindrome Number
+
+class Solution {
+  bool isPalindrome(int x) {
+      if(x < 0) return false;
+
+      String reverse = x.toString().split('').reversed.join();
+      int y = int.parse(reverse);
+
+      if(x == y){
+          return true;
+      }else{
+          return false;
+      }
+  }
+}
+
+//  2092. Find All People With Secret
+
+import 'dart:collection';
+class Solution {
+  List<List<int>> countingSort(List<List<int>> list){
+    List<List<List<int>>> countingSortArray=List.generate(100007,(_)=>[]);
+    for(int i=0;i<list.length;i++){
+      countingSortArray[list[i][2]].add(list[i]);
+    }
+    List<List<int>> ret=[];
+    for(int i=0;i<100007;i++){
+      for(int j=0;j<countingSortArray[i].length;j++)
+        ret.add(countingSortArray[i][j]);
+    }
+    return ret;
+  }
+  List<int> findAllPeople(int n, List<List<int>> meetings, int firstPerson) {
+    meetings=countingSort(meetings);
+    List<bool> know=List.generate(n,(_)=>false);
+    know[0]=true;
+    know[firstPerson]=true;
+    List<List<List<int>>> graph=List.generate(n,(_)=>[]);
+    final queue = Queue<int>();
+    for(int i=0;i<meetings.length;i++){
+      graph[meetings[i][0]].add([meetings[i][1],meetings[i][2]]);
+      graph[meetings[i][1]].add([meetings[i][0],meetings[i][2]]);
+      if((know[meetings[i][0]]==true&&know[meetings[i][1]]==false)||
+      (know[meetings[i][0]]==false&&know[meetings[i][1]]==true)){
+        if(!know[meetings[i][0]]){
+          queue.add(meetings[i][0]);
+          know[meetings[i][0]]=true;        
+        }
+        if(!know[meetings[i][1]]){
+          queue.add(meetings[i][1]);
+          know[meetings[i][1]]=true;
+        }
+        while(queue.length!=0){
+          for(int j=graph[queue.last].length-1;j>=0;j--){
+            if(graph[queue.last][j][1]!=meetings[i][2])
+              break;
+            int person=graph[queue.last][j][0];
+            if(know[person]==false){
+              queue.addFirst(person);
+              know[person]=true;
+            }
+          }
+          queue.removeLast();
+        }
+      }
+
+    }
+    List<int> ans=[];
+    for(int i=0;i<n;i++){
+      if(know[i]){
+        ans.add(i);
+      }
+    }
+    return ans;
+  }
+}
