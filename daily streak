@@ -96,3 +96,6 @@ class Solution {
     return ans;
   }
 }
+
+//  2709. Greatest Common Divisor Traversal
+
